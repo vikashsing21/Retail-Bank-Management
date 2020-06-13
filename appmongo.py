@@ -1,8 +1,8 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, session, redirect, url_for
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
-
+app.secret_key = 'secretkey'
 app.config['MONGO_URI'] = "mongodb://127.0.0.1:27017/dbtest"
 
 mongo = PyMongo(app)
@@ -48,7 +48,8 @@ def findEmp():
         for i in id:
             temp += 1
         if temp:
-            return render_template("options.html", msg="user found")
+            session['username'] = 'auth'
+            return redirect(url_for('goToOptions'))
         else:
             return not_found()
     else:
@@ -64,7 +65,19 @@ def createEmp():
     if usr and pwd and role:
         id = mongo.db.employee.insert(
             {'username': usr, 'password': pwd, 'role': role})
-        return render_template("options.html", msg="user found")
+        session['username'] = 'auth'
+        return redirect(url_for('goToOptions'))
+    else:
+        return not_found()
+
+
+@app.route('/options')
+def goToOptions():
+    if 'username' in session:
+        if session['username'] == 'auth':
+            return render_template("options.html")
+        else:
+            return not_found()
     else:
         return not_found()
 
