@@ -1,0 +1,20 @@
+{% extends "Customer/layout.html" %}
+{% block body %}
+    <form action="" method="post" style="text-align: center;">
+        <h2>Search Customer</h2>
+
+        <label for="id">Enter SSN ID</label><br>
+        <input type="text" name="id" placeholder="id"><br><br>
+        <br>
+        
+        <p>or</p>
+        <br>
+        
+        <label for="id">Customer ID</label><br>
+        <input type="text" name="id" placeholder="id"><br><br>
+
+
+        <input type="submit" name="submit" value="View">
+
+        </form>
+   {% endblock %}

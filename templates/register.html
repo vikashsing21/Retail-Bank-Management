@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>User Registration</title>
+    <!--bootstrap css-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <!--external css-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/stylefiles.css') }}" />
+    <!-- jquery   -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- bootstrap js   -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- fontawesome icons   -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" />
+</head>
+
+<body>
+    <h2>Register</h2>
+    <section class="container">
+        <section class="row justify-content-center">
+            <section class="col-12 col-sm-6 col-md-3">
+                <form method="post" action="/signup" class="form-container">
+                    <!--    username field      -->
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                    </label>
+                    <div class="form-group">
+                        <p>
+                            <input type="text" class="form-control" name="username" id="username"
+                                placeholder="Username" />
+                        </p>
+                    </div>
+
+                    <!--  password field        -->
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                    </label>
+                    <div class="form-group">
+                        <p>
+                            <input type="password" class="form-control" name="password" id="Password"
+                                placeholder="Password" />
+                        </p>
+                    </div>
+                    <!-- choose role -->
+                    <label for="role">Choose your role:</label>
+                    <br>
+                    <select id="role" name="role">
+                        <option value="0">customer executive</option>
+                        <option value="1">cashier</option>
+                    </select>
+                    <p></p>
+                    <input class="btn btn-success btn-block" type="submit" value="Register" />
+                    <p></p>
+
+                    <div>
+                        <p>
+                            <a href="{{url_for('login')}}">Already User? Please Log In </a>.
+                        </p>
+
+                        <!--for toggle message-->
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                window.setTimeout(function () {
+                                    $(".msg")
+                                        .fadeTo(500, 0)
+                                        .slideUp(500, function () {
+                                            $(this).remove();
+                                        });
+                                }, 1500);
+                            });
+                        </script>
+                        <div class="msg" style="color: white;">{{ msg }}</div>
+                    </div>
+                </form>
+            </section>
+        </section>
+    </section>
+</body>
+
+</html>

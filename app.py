@@ -14,8 +14,8 @@ migrate = Migrate(app, db)
 
 # index page
 @app.route('/')
-def index():
-    return render_template('index.html')
+def login():
+    return render_template('login.html')
 
 # errorhandler
 @app.errorhandler(404)
@@ -33,22 +33,19 @@ def not_found(error=None):
 @app.route('/logout')
 def logoutUser():
     session.pop('username', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
-@app.route('/login.html')
-def indexLogin():
-    return render_template('login.html')
 
 
-@app.route('/signup.html')
-def indexSignup():
-    return render_template('signup.html')
+@app.route('/register.html')
+def register():
+    return render_template('register.html')
 
 @app.route('/signup', methods=['POST'])
-def createEmp():
+def createUser():
     usr = request.form['username']
-    pwd = request.form['pwd']
+    pwd = request.form['password']
     role = request.form['role']
 
     if usr and pwd and role:
@@ -62,8 +59,32 @@ def createEmp():
             db.session.add(user)
             db.session.commit()
             flash('You have successfully registered! You may now login.')
-            return redirect(url_for('indexLogin'))
+            return redirect(url_for('login'))
     return not_found()
+
+@app.route('/login', methods=['POST'])
+def findUser():
+    usr = request.form['username']
+    pwd = request.form['password']
+
+    if usr and pwd:
+        user=models.User.query.filter_by(username=usr).first()
+        print(user.role_id)
+        if(user!=None and user.verify_password(pwd)):
+            session['username'] = usr
+            if(user.role_id==1):
+                session['type']='cashier'
+                return render_template('Cashier/layout.html')
+            elif(user.role_id==0):                
+                session['type']='executive'
+            return render_template('Customer/layout.html')
+        else:
+            return not_found()
+    else:
+        return not_found()
+
+
+
 #
     # user = models.User.query.filter_by(username=usr).first()
     
