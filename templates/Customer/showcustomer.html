@@ -1,0 +1,39 @@
+{% extends "Customer/layout.html" %}
+{% block body %}
+<table class="table table-striped" border="1">
+    <tr>
+        <td>Customer ID</td>
+        <td>{{data.cid}}</td>
+
+    </tr>
+    <tr>
+        <td>SSN ID</td>
+        <td>{{data.ssnid}}</td>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td>{{data.name}}</td>
+    </tr>
+    <tr>
+        <td>Age</td>
+        <td>{{data.age}}</td>
+    </tr>
+    <tr>
+        <td>Address 1</td>
+        <td>{{data.address_1}}</td>
+    </tr>
+    <tr>
+        <td>Address 2</td>
+        <td>{{data.address_2}}</td>
+    </tr>
+    <tr>
+        <td>State</td>
+        <td>{{data.state}}</td>
+    </tr>
+    <tr>
+        <td>City</td>
+        <td>{{data.city}}</td>
+    </tr>
+
+</table>
+{% endblock %}

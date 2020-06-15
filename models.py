@@ -48,8 +48,10 @@ class Customer(db.Model):
     __tablename__ = 'customers'
 
     cid = db.Column(db.Integer, primary_key=True)
-    ssin_id=db.Column(db.Integer,index=True, unique=True)
-    name = db.Column(db.String(60), unique=True)
-    Age = db.Column(db.Integer)
-    address_1 = db.Column(db.String(200))
-    address_2 = db.Column(db.String(200))
+    ssnid=db.Column(db.Integer,index=True, unique=True)
+    name = db.Column(db.String(60),nullable=False )
+    age = db.Column(db.Integer,nullable=False)
+    address_1 = db.Column(db.String(200),nullable=False)
+    address_2 = db.Column(db.String(200),nullable=True)
+    state=db.Column(db.String(100),nullable=False)
+    city=db.Column(db.String(100),nullable=False)

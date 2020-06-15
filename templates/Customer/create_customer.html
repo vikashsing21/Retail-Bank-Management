@@ -1,0 +1,85 @@
+{% extends "Customer/layout.html" %}
+{% block body %}
+<form action="/customer/create" method="post" style="text-align: center;">
+    <h2> Create Customer Screen</h2>
+
+    <label for="id">Customer SSN id</label><br>
+    <input type="text" name="ssnid" placeholder="SSN ID" required pattern=".{5,10}"><br>
+
+    <label for="name">Customer Name</label><br>
+    <input type="tect" name="name" placeholder="customer name" required><br>
+
+    <label for="age">Age</label><br>
+    <input type="number" name="age" placeholder="age" required min="1" max="200"><br>
+
+
+    <label for="address1">Address1</label><br>
+    <textarea type="text" name="address1" placeholder="address" cols="20px" rows="2px" required="required"></textarea><br>
+    <label for="address2">Address2</label><br>
+    <textarea type="text" name="address2" placeholder="address" cols="20px" rows="2px"></textarea><br>
+
+    <label for="state">State</label><br>
+    <select name="state" id="state" required>
+        <option value='' disabled selected>Select state......</option>
+
+    </select><br>
+
+
+    <label for="city">City</label><br>
+    <select name="city" id="city" required>
+        <option value='' disabled selected>Select city......</option>
+
+    </select>
+    <br><br>
+
+    <input type="submit" name="submit" value="Submit">
+    <input type="reset" name="reset" value="Reset">
+
+</form>
+
+
+<script>
+    $(document).ready(function () {
+
+        parent_id = null
+        load_json_data('state');
+
+        function load_json_data(id, parent_id) {
+            var data = JSON.parse('{{ data | tojson | safe}}');
+            var html_code = '';
+            html_code += '<option value="">Select ' + id + '</option>';
+            if (id == 'state') {
+                data = data['states']
+            }
+            if (id == 'city') {
+                data = data['states'][parent_id]['city']
+            }
+
+            $.each(data, function (key, value) {
+                if (id == 'state') {
+                    html_code += '<option value="' + key + '">' + value[id] + '</option>';
+                }
+                else if (id == 'city') {
+
+                    if (parent_id != null) {
+                        html_code += '<option value="' + key + '">' + value + '</option>';
+
+                    }
+                }
+            });
+            $('#' + id).html(html_code);
+        }
+
+        $(document).on('change', '#state', function () {
+            var state_id = $(this).val();
+            if (state_id != '') {
+                load_json_data('city', state_id);
+            }
+            else {
+                $('#city').html('<option value="">Select city</option>');
+            }
+        });
+    });
+</script>
+
+{% endblock %}
