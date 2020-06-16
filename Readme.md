@@ -1,4 +1,4 @@
-# Banking Application -Python Flask
+jjjjjjjj# Banking Application -Python Flask
 
  > The objective of this project is to design simple APIs for a banking application.  
  
@@ -13,7 +13,7 @@
 
  - Install either of the python versions (I used Python3.7)
  - Create new virtual environment using ``` python -m venv venv ```
- - Activate the virtual environment using ``` source venv/bin/activate ```
+ - Activate the virtual environment using ``` venv\Scripts\activate ```
  - Install Requirements Files using ``` pip install -r requirements.txt ```
  - Change user, password, server, database in  ``` config.py ```
  - After Succesfully Connecting to the Database perform migration by running following series of Commands:
