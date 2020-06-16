@@ -11,8 +11,8 @@
 
 ## Usage
 
- - Install either of the python versions (I used Python3)
- - Create new virtual environment using ``` python3 -m venv venv ```
+ - Install either of the python versions (I used Python3.7)
+ - Create new virtual environment using ``` python -m venv venv ```
  - Activate the virtual environment using ``` source venv/bin/activate ```
  - Install Requirements Files using ``` pip install -r requirements.txt ```
  - Change user, password, server, database in  ``` config.py ```
