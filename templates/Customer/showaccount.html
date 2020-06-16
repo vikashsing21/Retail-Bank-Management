@@ -1,0 +1,25 @@
+
+{% extends "Customer/layout.html" %}
+{% block body %}
+<table class="table table-striped" border="1">
+    <tr>
+        <td>Customer ID</td>
+        <td>{{data[0].customer_cid}}</td>
+
+    </tr>
+    {% for account in data %}
+    <tr>
+        <td>Account Id</td>
+        <td>{{account.accntid}}</td>
+    </tr>
+    <tr>
+        <td>Account Type</td>
+        <td>{{account.accnt_type}}</td>
+    </tr>
+    <tr>
+        <td>Amount</td>
+        <td>{{account.ammount}}</td>
+    </tr>
+{%endfor%}
+</table>
+{% endblock %}

@@ -155,7 +155,6 @@ def searchcustomer():
             elif(cid!='' and ssnid==''):
                 customer=models.Customer.query.filter_by(cid=cid).first()
             if customer!=None:
-                print("customer data : ",customer)
                 return render_template("Customer/showcustomer.html",data=customer)
             flash("Enter Valid either of Customer ID or SSNID","warning")
             return render_template('Customer/search.html') 
@@ -168,12 +167,60 @@ def searchcustomer():
 
 
 
-@app.route("/create_account/")
-def create():
-    return render_template("Customer/create_account.html")
-@app.route("/account_search/")
+@app.route("/customer/create_account/",methods=['GET','POST'])
+def create_account():
+    if session.get('username') and session.get('type')=='executive':
+        if request.method=='POST':
+            customer=models.Customer.query.filter_by(cid=request.form['cid']).first()
+            if customer!=None:
+                cid=request.form['cid']
+            else:
+                cid=None
+            accnt_type=request.form['accnt_type']
+            ammount=int(request.form['ammount'])
+            
+            if cid and accnt_type and ammount:
+                account=models.Account.query.filter_by(customer_cid=cid,accnt_type=accnt_type).first()
+                if(account==None):
+                    account=models.Account(customer_cid=cid,accnt_type=accnt_type,ammount=ammount
+                    )
+                    db.session.add(account)
+                    db.session.commit()
+                    flash("Account Created successfully!","success")
+                else:
+                    flash("Account with CID : "+cid+" and Type : "+accnt_type+" already exists!","warning")
+                return render_template('Customer/create_account.html')  
+        elif request.method=='GET':
+             return render_template('Customer/create_account.html')
+    else:
+        flash("Login first as a Executive","danger")
+        return redirect(url_for('login'))
+
+
+@app.route("/customer/account_search/",methods=['GET','POST'])
 def acc_search():
-    return render_template("Customer/account_search.html")
+    if session.get('username') and session.get('type')=='executive':
+        if request.method=='POST':
+            customer_cid=request.form['customer_cid']
+            accntid=request.form['accntid']
+            account=None
+            if(customer_cid!='' and accntid==''):
+                account=models.Account.query.filter_by(customer_cid=customer_cid)
+                # print("account cid : ",account)
+                # for acc in account:
+                #     print("accntid : {0} , cid : {1} , type : {2} , amount : {3}".format(acc.accntid,
+                #     acc.customer_cid,acc.accnt_type,acc.ammount))
+            elif(accntid!='' and customer_cid==''):
+                account=models.Account.query.filter_by(accntid=accntid)
+            if account!=None:
+                return render_template("Customer/showaccount.html",data=account)
+            flash("Enter Valid either of Customer ID or customer_cid","warning")
+            return render_template('Customer/account_search.html') 
+        else:
+            return render_template('Customer/account_search.html')
+    else: 
+        flash("Login first as a Account Executive","danger")
+    return redirect(url_for('login'))
 
 # status
 @app.route("/customer_status/")
@@ -202,3 +249,4 @@ def cashierIndex():
     
 if __name__ == '__main__':
     app.run(debug=True)
+
