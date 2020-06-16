@@ -17,9 +17,9 @@
  - Install Requirements Files using ``` pip install -r requirements.txt ```
  - Change user, password, server, database in  ``` config.py ```
  - After Succesfully Connecting to the Database perform migration by running following series of Commands:
- -``` flask db init ```
- -``` flask db migrate ```
- -``` flask db upgrade ```
+ - ``` flask db init ```
+ - ``` flask db migrate ```
+ - ``` flask db upgrade ```
  - Run the application by running app file using ``` python app.py ``` or use  ``` flask run ``` 
  
 
