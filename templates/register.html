@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
     <!--external css-->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/stylefiles.css') }}" />
+    
     <!-- jquery   -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
     <!-- bootstrap js   -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -49,9 +49,10 @@
                     <!-- choose role -->
                     <label for="role">Choose your role:</label>
                     <br>
-                    <select id="role" name="role">
-                        <option value="0">customer executive</option>
-                        <option value="1">cashier</option>
+                    <select id="role" name="role" required>
+                        <option value="" disable selected>Select Role</option>
+                        <option value="0" >customer executive</option>
+                        <option value="1" >cashier</option>
                     </select>
                     <p></p>
                     <input class="btn btn-success btn-block" type="submit" value="Register" />

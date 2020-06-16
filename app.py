@@ -88,19 +88,20 @@ def findUser():
 
 #==========Customers=========================
 @app.route('/customer')
-def customerIndex():
-    if session.get('username') and session.get('type')=='executive':
-            return render_template('Customer/layout.html')
-    flash("Login first as a Executive","danger")
-    return redirect(url_for('login'))
-
-
 @app.route('/customer/home')
 def home():
     if session.get('username') and session.get('type')=='executive':
             return render_template('Customer/home.html')
     flash("Login first as a Executive","danger")
     return redirect(url_for('login'))
+
+
+# @app.route('/customer/home')
+# def home():
+#     if session.get('username') and session.get('type')=='executive':
+#             return render_template('Customer/home.html')
+#     flash("Login first as a Executive","danger")
+#     return redirect(url_for('login'))
 
 
 @app.route('/customer/create',methods=['GET','POST'])
@@ -112,17 +113,16 @@ def create_customer():
             ssnid=request.form['ssnid']
             name=request.form['name']
             age=request.form['age']
-            address1=request.form['address1']
-            address2=request.form['address2']
+            address=request.form['address']
             skey=int(request.form['state'])
             ckey=int(request.form['city'])
             state=data['states'][skey]['state']
             city=data['states'][skey]['city'][ckey]
-            if ssnid and name and age and address1 and state and city:
+            if ssnid and name and age and address and state and city:
                 customer=models.Customer.query.filter_by(ssnid=ssnid).first()
                 if(customer==None):
                     customer=models.Customer(ssnid=ssnid,name=name,age=age,
-                    address_1=address1,address_2=address2,state=state,city=city
+                    address=address,state=state,city=city
                     )
                     db.session.add(customer)
                     db.session.commit()
@@ -158,6 +158,30 @@ def searchcustomer():
         flash("Login first as a Account Executive","danger")
     return redirect(url_for('login'))
 
+
+
+
+@app.route("/create_account/")
+def create():
+    return render_template("Customer/create_account.html")
+@app.route("/account_search/")
+def acc_search():
+    return render_template("Customer/account_search.html")
+
+# status
+@app.route("/customer_status/")
+def cus_status():
+    return render_template("Customer/cust_account_statement.html")
+@app.route("/account_status/")
+def acc_status():
+    return render_template("Customer/account_statement.html")
+
+
+# transfer
+@app.route("/transfer/")
+def transfer():
+    return render_template("Customer/transfer_money.html")
+
 #==========Cashier=========================
 @app.route('/cashier')
 def cashierIndex():
@@ -165,6 +189,8 @@ def cashierIndex():
             return render_template('Cashier/layout.html')
     flash("Login first as a Cashier","danger")
     return redirect(url_for('login'))
+
+
 
     
 if __name__ == '__main__':

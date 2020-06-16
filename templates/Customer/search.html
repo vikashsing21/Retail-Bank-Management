@@ -1,20 +1,53 @@
 {% extends "Customer/layout.html" %}
 {% block body %}
-    <form action="/customer/search" method="post" style="text-align: center;">
-        <h2>Search Customer</h2>
 
-        <label for="id">Enter SSN ID</label><br>
-        <input type="text" name="ssnid" placeholder="ssnid"><br><br>
-        <br>
-        
-        <p>or</p>
-        <br>
-        
-        <label for="id">Customer ID</label><br>
-        <input type="text" name="cid" placeholder="cid"><br><br>
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-option contact-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Search Customer</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
 
+<div class="container">
+    <div class="contact__form">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="contact__form__text">
+                    <form action="/customer/search" method="post">
+                        <div class="input-list">
+                            <!--SSN id-->
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="id">Enter SSN ID</label>
+                                <div class="col-lg">
+                                    <input class="form-control" name="ssnid" placeholder="SSN ID" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-center"><label class="col-form-label">OR</label></div>
+                            <!--Customer  id-->
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="id">Customer ID</label>
+                                <div class="col-lg">
+                                    <input class="form-control" name="cid" placeholder="Customer ID" type="text">
+                                </div>
+                            </div>
 
-        <input type="submit" name="submit" value="View">
+                            <!--Submit button-->
+                            <div class="row justify-content-center">
+                                <button class="site-btn" name="submit" type="submit" value="Submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        </form>
-   {% endblock %}
+{% endblock %}

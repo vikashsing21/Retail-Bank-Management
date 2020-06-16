@@ -1,17 +1,67 @@
 {% extends "Customer/layout.html" %}
 {% block body %}
-    <form action="" method="post" style="text-align: center;">
-        <h2>Account Statement</h2>
-        Account ID:
-        <input type="text" name="id" placeholder="id"><br><br>
-        <br>
-        <input type="radio" name="radio" id="transaction1">Last number of Transactions<br><br>
-        <input type="radio" name="radio" id="transaction2">Start-End Dates<br><br>
 
-        Number of Transactions:
-        <input type="number" name="transaction"><br><br>
+<div class="breadcrumb-option contact-breadcrumb"
+     style="background: url({{ url_for ('static', filename = 'contact-breadcrumb.jpg') }});">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Account Statement</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
+<div class="container">
+    <div class="contact__form">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="contact__form__text">
+                    <form action="" method="post">
+                        <div class="input-list">
+                            <!--Customer ID-->
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="id">Account ID</label>
+                                <div class="col-lg">
+                                    <input class="form-control" name="id" placeholder="Customer ID" type="text">
+                                </div>
+                            </div>
 
-        <input type="submit" name="submit" value="Submit">
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="id">Last Number of Transactions</label>
+                                <div class="col-lg-1 justify-content-right">
+                                    <input class="form-control form-check-input" id="transaction1" type="radio">
+                                </div>
+                                <label class="col-lg-3 col-form-label" for="id">Start-End Dates</label>
 
-        </form>
-  {% endblock %}
+                                <div class="col-lg-1">
+                                    <input class="form-control form-check-input" id="transaction2" name="radiobutton"
+                                           type="radio">
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="id">Number of Transactions</label>
+                                <div class="col-lg">
+                                    <input class="form-control" name="transactions" placeholder="Number of Transactions"
+                                           type="text">
+                                </div>
+                            </div>
+
+                            <!--Submit-->
+                            <div class="row justify-content-center">
+                                <button class="site-btn" name="submit" type="submit" value="Submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

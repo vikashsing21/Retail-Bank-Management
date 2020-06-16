@@ -1,4 +1,4 @@
 {% extends "Customer/layout.html" %}
 {% block body %}
-<p>Welcome {{session['type']}} : {{session['username']}} </p>
+<p>Welcome {{session.get('type')}} : {{session.get('username')}} </p>
 {% endblock %}
