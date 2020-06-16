@@ -42,8 +42,10 @@
                     <a href="#">Customer
                         Management</a>
                     <ul class="dropdown">
-                        <li><a href="/customer/create">Create Customer</a></li>
-                        <li><a href="/customer/search">Search Customer</a></li>
+                        <li><a href="/customer/create">Create</a></li>
+                        <li><a href="/customer/search">Search</a></li>
+                        <li><a href="/customer/update">Update</a></li>
+                        <li><a href="/customer/delete">Delete</a></li>
                     </ul>
                 </li>
                 <li>
@@ -122,8 +124,10 @@
                                 <a href="#">Customer
                                     Management</a>
                                 <ul class="dropdown">
-                                    <li><a href="/customer/create">Create Customer</a></li>
-                                    <li><a href="/customer/search">Search Customer</a></li>
+                                    <li><a href="/customer/create">Create</a></li>
+                                    <li><a href="/customer/search">Search</a></li>
+                                    <li><a href="/customer/update">Update</a></li>
+                                    <li><a href="/customer/delete">Delete</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -165,19 +169,10 @@
 {% block body %}
 {% endblock %}
 
-<!-- Showing Flash messages -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <!-- <div  role="alert"></div> -->
-        <ul class=flashes>
-          {% for category, message in messages %}
-            <li class="alert alert-{{ category }} alert-dismissible"> {{ message }} </li>
-          {% endfor %}
-          </ul>
-        </div>
-        {% endif %}
-      {% endwith %}
+<!-- For showing Flash Messages from app.py -->
+{% include "flashmes.html" %}
 
+<!-- footer -->
 {% include "footer.html" %}
 <!-- scripts -->
 

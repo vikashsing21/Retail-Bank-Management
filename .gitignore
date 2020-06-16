@@ -1,6 +1,5 @@
 venv
 migrations
 __pycache__
-venv
 temp.py
 newsapp.py

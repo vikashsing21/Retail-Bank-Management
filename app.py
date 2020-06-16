@@ -3,7 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from config import Config
 from flask_migrate import Migrate
 from _datetime import datetime
+from form import RegistrationForm,LoginForm,CreateCustomerForm
 import json
+
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -12,14 +15,16 @@ import models
 migrate = Migrate(app, db)
 
 # index page
+#this route also checks if a user is already logged in or not
 @app.route('/')
 def login():
+    form = LoginForm()
     if session.get('username') and session.get('type')=='executive':
             return redirect('/customer')
     elif session.get('username') and session.get('type')=='cashier':
             return redirect('/cashier') 
     else:
-        return render_template('login.html')
+        return render_template('login.html',form=form)
 
 
 # errorhandler
@@ -32,7 +37,6 @@ def not_found(error=None):
 
     resp = jsonify(message)
     resp.status_code = 404
-
     return resp
 
 @app.route('/logout')
@@ -44,7 +48,8 @@ def logout():
 
 @app.route('/register', methods=['GET','POST'])
 def register():
-    if request.method=='POST':
+    form = RegistrationForm()
+    if request.method=='POST' and form.validate():
         usr = request.form['username']
         pwd = request.form['password']
         role = request.form['role']
@@ -55,13 +60,15 @@ def register():
                 user = models.User(username=usr,
                                     role_id=role)
                 user.set_password(pwd)
-
                 # add employee to the database
                 db.session.add(user)
                 db.session.commit()
                 flash('You have successfully registered! You may now login.','success')
                 return redirect(url_for('login'))
-    return render_template('register.html')
+            else:
+                flash('User with given Username already exists.','danger')
+    return render_template('register.html',form=form)
+
 
 @app.route('/login', methods=['GET','POST'])
 def findUser():
@@ -146,11 +153,11 @@ def searchcustomer():
             if(ssnid!='' and cid==''):
                 customer=models.Customer.query.filter_by(ssnid=ssnid).first()
             elif(cid!='' and ssnid==''):
-                customer=models.Customer.query.filter_by(ssnid=ssnid).first()
+                customer=models.Customer.query.filter_by(cid=cid).first()
             if customer!=None:
                 print("customer data : ",customer)
                 return render_template("Customer/showcustomer.html",data=customer)
-            flash("Enter Valid Customer ID or SSNID","warning")
+            flash("Enter Valid either of Customer ID or SSNID","warning")
             return render_template('Customer/search.html') 
         else:
             return render_template('Customer/search.html')
