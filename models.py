@@ -56,9 +56,9 @@ class Customer(db.Model):
     address = db.Column(db.String(300),nullable=False)
     state=db.Column(db.String(60),nullable=False)
     city=db.Column(db.String(60),nullable=False)
-    accounts=db.relationship('Account', backref='customer', lazy='dynamic')
+    accounts=db.relationship('Account', backref='customer', lazy='dynamic',cascade='all, delete-orphan')
     created_on = db.Column(db.TIMESTAMP, default=datetime.now())
-    updated_on= db.Column(db.DateTime, nullable=False,default=datetime.utcnow,onupdate=datetime.utcnow)
+    updated_on= db.Column(db.DateTime, nullable=False,default=datetime.now(),onupdate=datetime.now())
 
 class Account(db.Model):
     """
@@ -68,7 +68,7 @@ class Account(db.Model):
     __tablename__ = 'accounts'
     
     accntid=db.Column(db.Integer,primary_key=True)
-    customer_cid = db.Column(db.Integer, db.ForeignKey('customers.cid'))
+    customer_cid = db.Column(db.Integer, db.ForeignKey('customers.cid',ondelete='CASCADE'))
     accnt_type = db.Column(db.String(30),nullable=False)
     ammount=db.Column(db.Integer,nullable=False)
     created_on = db.Column(db.TIMESTAMP, default=datetime.now())

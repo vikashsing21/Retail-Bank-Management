@@ -175,11 +175,17 @@ def update(id):
             name=request.form['name']
             age=request.form['age']
             address=request.form['address']
-            customer.name = name
-            customer.age  = age
-            customer.address = address
-            db.session.commit()
-            flash("Customer Updated Successfully","success")
+            if(name):
+                customer.name = name
+            if(age):
+                customer.age  = age
+            if(address):
+                customer.address = address
+            if name or age or address:
+                db.session.commit()
+                flash("Customer Updated Successfully","success")
+            else:
+                 flash("No Changes were made","success")
             return redirect(url_for('searchcustomer'))
 
                   
@@ -190,14 +196,17 @@ def update(id):
         flash("Login first as a Account Executive","danger")
     return redirect(url_for('login'))
 
-@app.route("/customer/delete/<id>")    
+@app.route("/customer/delete/<id>",methods=['GET','POST'])    
 def delete(id):
     if session.get('username') and session.get('type')=='executive':
         customer = models.Customer.query.filter_by(ssnid=id).first()        
-        db.session.delete(customer)
-        db.session.commit()
-        flash("Customer Deleted Successfully","success")
-        return redirect(url_for('searchcustomer'))
+        if request.method=='POST':
+            db.session.delete(customer)
+            db.session.commit()
+            flash("Customer Deleted Successfully","success")
+            return redirect(url_for('searchcustomer'))
+        else:
+            return render_template('Customer/delete_customer.html',data=customer)         
     else: 
         flash("Login first as a Account Executive","danger")
     return redirect(url_for('login'))
@@ -254,7 +263,7 @@ def acc_search():
                 #     print("accntid : {0} , cid : {1} , type : {2} , amount : {3}".format(acc.accntid,
                 #     acc.customer_cid,acc.accnt_type,acc.ammount))
                 return render_template("Customer/showaccount.html",data=account)
-            flash("Enter Valid either of Customer ID or customer_cid","warning")
+            flash("Enter Valid either of Customer ID or Account Id","warning")
             return render_template('Customer/account_search.html') 
         else:
             return render_template('Customer/account_search.html')

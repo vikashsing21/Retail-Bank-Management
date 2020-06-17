@@ -23,7 +23,7 @@
             <div class="col-lg-9">
                 <div class="contact__form__text">
                     
-                    <form action="{{url_for('update',id=data.ssnid)}}" method="post">
+                    <form action="{{url_for('delete',id=data.ssnid)}}" method="post">
                         <div class="input-list">
                             
                             <div class="form-group row justify-content-center">
@@ -41,19 +41,13 @@
 
 
                             <div class="form-group row justify-content-center">
-                                <label class="col-lg-3 col-form-label" for="id">Old Customer Name</label>
+                                <label class="col-lg-3 col-form-label" for="id">Customer Name</label>
                                 <div class="col-lg">
                                     <input type="text" style="background-color: gray;color: white;" value="{{data.name}}" disabled>
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center">
-                                <label class="col-lg-3 col-form-label" for="id">New Customer Name</label>
-                                <div class="col-lg">
-                                    <input type="text" name="name" value="">
-                                </div>
-                            </div>
-                            <div class="form-group row justify-content-center">
-                                <label class="col-lg-3 col-form-label" for="id">Old Age</label>
+                                <label class="col-lg-3 col-form-label" for="id">Age</label>
                                 <div class="col-lg">
                                     <input type="text" style="background-color: gray;color: white;" value="{{data.age}}" disabled>
                                 </div>
@@ -61,32 +55,20 @@
 
 
                             <div class="form-group row justify-content-center">
-                                <label class="col-lg-3 col-form-label" for="age"> New Age</label>
-                                <div class="col-lg">
-                                    <input class="form-control" name="age" type="text" value="">
-                                </div>
-                            </div>
-                            <div class="form-group row justify-content-center">
-                                <label class="col-lg-3 col-form-label" for="id">Old Address</label>
+                                <label class="col-lg-3 col-form-label" for="id">Address</label>
                                 <div class="col-lg">
                                     <input type="text" style="background-color: gray;color: white;" value="{{data.address}}" disabled>
                                 </div>
                             </div>
 
-                            <div class="form-group row justify-content-center">
-                                <label class="col-lg-3 col-form-label" for="address">New Address</label>
-                                <div class="col-lg">
-                                    <textarea class="form-control" cols="20px" name="address" 
-                                        rows="2px" value="" type="text"></textarea>
-                                </div>
-                            </div>
                             
                         </div>
+
                         <div class="row justify-content-center">
-                            <button class="site-btn" name="submit" required type="submit" value="Submit">
-                                Update
+                            <button class="btn btn-danger" name="submit" required type="submit" value="Confirm Delete">
+                                Confirm Delete
                             </button>
-                           
+                            <a  href="{{url_for('searchcustomer')}}" class="btn btn-warning">Cancel</a>
                         </div>
                     </form>
                         

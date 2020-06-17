@@ -2,8 +2,3 @@ venv
 migrations
 __pycache__
 temp.py
-templates/Customer/jay_create_customer.html
-templates/Customer/jay_showcustomer.html
-templates/Customer/jay_search.html
-jay_app.py
-templates/Customer/jay_layout.html
