@@ -1,13 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,IntegerField,PasswordField,SubmitField,validators,TextAreaField
+from wtforms import StringField,IntegerField,PasswordField,SubmitField,validators,TextAreaField,SelectField
 from wtforms.validators import DataRequired
 
 
 class RegistrationForm(FlaskForm):  
 
-    username = StringField('Username', validators=[DataRequired(),validators.Regexp(regex='^[a-zA-Z][a-zA-Z0-9]+$', message="Username must start with alphabets"),validators.Length(min=5, max=25)])
-    password = PasswordField('password', validators=[DataRequired(),validators.Regexp(regex='((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%?=*&]).{8,20})',message='password must contain At least one lowercase,uppercase,digit,special character,8 characters long.')])
-
+    username = StringField('Username', validators=[DataRequired(),validators.Regexp(regex='^[a-zA-Z][a-zA-Z0-9]+$', message="Field must start with a alphabet and no special characters allowed."),validators.Length(min=5, max=25)])
+    password = PasswordField('password', validators=[DataRequired(),validators.Regexp(regex='((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^\&*\)\(\]\[\\+=._\-]))',message='Field must contain at least one lowercase,uppercase,digit and special character.'),validators.length(min=8)])
+    role = SelectField(u'Roles',[DataRequired()], choices=[('','Select Role'),('0', 'Account Executive'), ('1', 'Cashier')],default='')
 class LoginForm(FlaskForm):
     username=StringField("Username:",validators=[DataRequired()])
     password=PasswordField("Password:",validators=[DataRequired()])

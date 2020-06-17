@@ -37,16 +37,12 @@
 
                         <!--  password field        -->
                         {{form.password.label}}{{form.password(size=32)}}
+                    <!-- choose role -->
+                        {{form.role.label}}<br>
+                        {{form.role}}
                     </dl>
 
-                    <!-- choose role -->
-                    <label for="role">Choose your role:</label>
-                    <br />
-                    <select id="role" name="role" required>
-                        <option value="" disable selected>Select Role</option>
-                        <option value="0">customer executive</option>
-                        <option value="1">cashier</option>
-                    </select>
+                   
                     <p></p>
                     <input class="btn btn-success btn-block" type="submit" value="Register" />
                     <p></p>
@@ -64,11 +60,11 @@
     <!-- SHow Validation Errors  -->
     <div style="text-align: center">
         {% for error in form.username.errors %}
-        <span style="color:red;">{{error}}</span>
+        <span style="color:red;"><p>Username : {{error}}</p></span>
         {% endfor %}
         <br><br>
         {% for error in form.password.errors %}
-        <span style="color:red;">{{error}}</span>
+        <span style="color:red;"><p>Password : {{error}}</p></span>
         {% endfor %}
 
         <!-- For showing Flash Messages from app.py -->

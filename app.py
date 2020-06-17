@@ -171,15 +171,14 @@ def searchcustomer():
 def create_account():
     if session.get('username') and session.get('type')=='executive':
         if request.method=='POST':
-            customer=models.Customer.query.filter_by(cid=request.form['cid']).first()
+            cid=request.form['cid']
+            customer=models.Customer.query.filter_by(cid=cid).first()
             if customer!=None:
                 cid=request.form['cid']
-            else:
-                cid=None
             accnt_type=request.form['accnt_type']
             ammount=int(request.form['ammount'])
             
-            if cid and accnt_type and ammount:
+            if cid and accnt_type and ammount and customer:
                 account=models.Account.query.filter_by(customer_cid=cid,accnt_type=accnt_type).first()
                 if(account==None):
                     account=models.Account(customer_cid=cid,accnt_type=accnt_type,ammount=ammount
@@ -188,10 +187,10 @@ def create_account():
                     db.session.commit()
                     flash("Account Created successfully!","success")
                 else:
-                    flash("Account with CID : "+cid+" and Type : "+accnt_type+" already exists!","warning")
-                return render_template('Customer/create_account.html')  
-        elif request.method=='GET':
-             return render_template('Customer/create_account.html')
+                    flash("Account of Customer with CID : "+cid+" and Type : "+accnt_type+" already exists!","warning")
+            else:
+                flash("Customer with CID : "+cid+" doesn't exists!","warning")
+        return render_template('Customer/create_account.html')           
     else:
         flash("Login first as a Executive","danger")
         return redirect(url_for('login'))
@@ -201,18 +200,23 @@ def create_account():
 def acc_search():
     if session.get('username') and session.get('type')=='executive':
         if request.method=='POST':
-            customer_cid=request.form['customer_cid']
+            customer_cid=request.form['cid']
             accntid=request.form['accntid']
             account=None
+            # using customer id multiple accounts are possible
             if(customer_cid!='' and accntid==''):
-                account=models.Account.query.filter_by(customer_cid=customer_cid)
-                # print("account cid : ",account)
+                account=models.Account.query.filter_by(customer_cid=customer_cid).all()
+
+            # using account id only one account is possible
+            elif(accntid!='' and customer_cid==''):
+                account=models.Account.query.filter_by(accntid=accntid).all()
+
+            if account:
+                # print("account id : ",accntid)
+                # print("account : ",account)
                 # for acc in account:
                 #     print("accntid : {0} , cid : {1} , type : {2} , amount : {3}".format(acc.accntid,
                 #     acc.customer_cid,acc.accnt_type,acc.ammount))
-            elif(accntid!='' and customer_cid==''):
-                account=models.Account.query.filter_by(accntid=accntid)
-            if account!=None:
                 return render_template("Customer/showaccount.html",data=account)
             flash("Enter Valid either of Customer ID or customer_cid","warning")
             return render_template('Customer/account_search.html') 
