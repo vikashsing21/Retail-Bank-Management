@@ -165,6 +165,42 @@ def searchcustomer():
     return redirect(url_for('login'))
 
 
+@app.route('/customer/update/<id>',methods=['GET','POST'])
+def update(id):
+    if session.get('username') and session.get('type')=='executive':
+        customer = models.Customer.query.filter_by(ssnid=id).first()        
+        
+        if request.method == 'POST':
+            # return "name {0}".format(request.form['name'])
+            name=request.form['name']
+            age=request.form['age']
+            address=request.form['address']
+            customer.name = name
+            customer.age  = age
+            customer.address = address
+            db.session.commit()
+            flash("Customer Updated Successfully","success")
+            return redirect(url_for('searchcustomer'))
+
+                  
+        elif request.method=='GET':
+            
+            return render_template("Customer/update_customer.html",data=customer)
+    else: 
+        flash("Login first as a Account Executive","danger")
+    return redirect(url_for('login'))
+
+@app.route("/customer/delete/<id>")    
+def delete(id):
+    if session.get('username') and session.get('type')=='executive':
+        customer = models.Customer.query.filter_by(ssnid=id).first()        
+        db.session.delete(customer)
+        db.session.commit()
+        flash("Customer Deleted Successfully","success")
+        return redirect(url_for('searchcustomer'))
+    else: 
+        flash("Login first as a Account Executive","danger")
+    return redirect(url_for('login'))
 
 
 @app.route("/customer/create_account/",methods=['GET','POST'])

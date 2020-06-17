@@ -2,34 +2,33 @@
 {% block body %}
 <table class="table table-striped" border="1">
     <tr>
-        <td>Customer ID</td>
-        <td>{{data.cid}}</td>
-
+        <th>Customer ID</th>
+        <th>SSN ID</th>
+        <th>Name</th>        
+        <th>Age</th>
+        <th>Address</th>
+        <th>State</th>
+        <th>City</th>
     </tr>
     <tr>
-        <td>SSN ID</td>
-        <td>{{data.ssnid}}</td>
-    </tr>
-    <tr>
-        <td>Name</td>
-        <td>{{data.name}}</td>
-    </tr>
-    <tr>
-        <td>Age</td>
-        <td>{{data.age}}</td>
-    </tr>
-    <tr>
-        <td>Address</td>
-        <td>{{data.address}}</td>
-    </tr>
-    <tr>
-        <td>State</td>
-        <td>{{data.state}}</td>
-    </tr>
-    <tr>
-        <td>City</td>
+        <td>{{data.cid}}</td> 
+        
+        <td>{{data.ssnid}}</td>  
+        
+        <td>{{data.name}}</td>    
+        
+        <td>{{data.age}}</td>    
+       
+        <td>{{data.address}}</td>    
+        
+        <td>{{data.state}}</td>    
+        
         <td>{{data.city}}</td>
     </tr>
 
 </table>
+<div style="text-align: center;">
+    <a href="{{url_for('update',id=data.ssnid)}}" class="btn btn-warning">Update</a>
+    <a  href="{{url_for('delete',id=data.ssnid)}}" class="btn btn-danger">Delete</a>
+    </div>
 {% endblock %}
