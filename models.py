@@ -22,7 +22,7 @@ class User(db.Model):
     role_id = db.Column(db.Integer, index=True)
     created_on = db.Column(db.TIMESTAMP, default=datetime.now())
     #login stores when the user succefully logged in
-    login = db.Column(db.DateTime, nullable=True)
+    login = db.Column(db.TIMESTAMP, nullable=True)
 
 
 
@@ -56,9 +56,10 @@ class Customer(db.Model):
     address = db.Column(db.String(300),nullable=False)
     state=db.Column(db.String(60),nullable=False)
     city=db.Column(db.String(60),nullable=False)
-    accounts=db.relationship('Account', backref='customer', lazy='dynamic',cascade='all, delete-orphan')
+    accounts=db.relationship('Account', backref='customers', lazy='dynamic',cascade='all, delete-orphan')
+    cusotmer_status=db.relationship('CustomerStatus', backref='customers', uselist=False)
     created_on = db.Column(db.TIMESTAMP, default=datetime.now())
-    updated_on= db.Column(db.DateTime, nullable=False,default=datetime.now(),onupdate=datetime.now())
+    updated_on= db.Column(db.TIMESTAMP, nullable=False,default=datetime.now(),onupdate=datetime.now())
 
 class Account(db.Model):
     """
@@ -71,6 +72,38 @@ class Account(db.Model):
     customer_cid = db.Column(db.Integer, db.ForeignKey('customers.cid',ondelete='CASCADE'))
     accnt_type = db.Column(db.String(30),nullable=False)
     ammount=db.Column(db.Integer,nullable=False)
+    account_status=db.relationship('AccountStatus', backref='accounts', uselist=False)
     created_on = db.Column(db.TIMESTAMP, default=datetime.now())
-    updated_on= db.Column(db.DateTime, nullable=False,default=datetime.utcnow,onupdate=datetime.utcnow)
+    updated_on= db.Column(db.TIMESTAMP, nullable=False,default=datetime.now(),onupdate=datetime.now())
+
+class CustomerStatus(db.Model):
+    """
+    Create a Cusotmer Status table
+    """
+
+    __tablename__ = 'cusotmer_status'
+    
+    id=db.Column(db.Integer,primary_key=True)
+    customer_cid = db.Column(db.Integer, db.ForeignKey('customers.cid'))
+    customer_ssnid = db.Column(db.Integer)
+    status=db.Column(db.String(30))
+    message=db.Column(db.String(100))
+    created_on = db.Column(db.TIMESTAMP, default=datetime.now())
+    updated_on= db.Column(db.TIMESTAMP, nullable=False,default=datetime.now(),onupdate=datetime.now())
+    
+class AccountStatus(db.Model):
+    """
+    Create a Account Status table
+    """
+
+    __tablename__ = 'account_status'
+    
+    id=db.Column(db.Integer,primary_key=True)
+    customer_cid = db.Column(db.Integer)
+    account_id = db.Column(db.Integer,db.ForeignKey('accounts.accntid'))
+    accnt_type = db.Column(db.String(30))
+    status=db.Column(db.String(30))
+    message=db.Column(db.String(100))
+    created_on = db.Column(db.TIMESTAMP, default=datetime.now())
+    updated_on= db.Column(db.TIMESTAMP, nullable=False,default=datetime.now(),onupdate=datetime.now())
     

@@ -113,7 +113,9 @@ def home():
 
 @app.route('/customer/create',methods=['GET','POST'])
 def create_customer():
+    c_message="Customer Created successfully!"
     if session.get('username') and session.get('type')=='executive':
+        
         with open('static/state_city.json') as datafile:
             data=json.load(datafile)
         if request.method=='POST':
@@ -133,7 +135,11 @@ def create_customer():
                     )
                     db.session.add(customer)
                     db.session.commit()
-                    flash("Customer Created successfully!","success")
+                    customer=models.Customer.query.filter_by(ssnid=ssnid).first()
+                    c_status=models.CustomerStatus(customer_cid=customer.cid,customer_ssnid=customer.ssnid,message=c_message,status="active")
+                    db.session.add(c_status)
+                    db.session.commit()
+                    flash(c_message,"success")
                 else:
                     flash("Customer with SSN ID : "+ssnid+" already exists!","warning")
                 return render_template('Customer/create_customer.html',data=data)  
@@ -147,8 +153,10 @@ def create_customer():
 def searchcustomer():
     if session.get('username') and session.get('type')=='executive':
         if request.method=='POST':
+            
             ssnid=request.form['ssnid']
             cid=request.form['cid']
+            print("Cid : {} SId {}".format(cid,ssnid))
             customer=None
             if(ssnid!='' and cid==''):
                 customer=models.Customer.query.filter_by(ssnid=ssnid).first()
@@ -167,6 +175,7 @@ def searchcustomer():
 
 @app.route('/customer/update/<id>',methods=['GET','POST'])
 def update(id):
+    c_message="Customer Updated Successfully!"
     if session.get('username') and session.get('type')=='executive':
         customer = models.Customer.query.filter_by(ssnid=id).first()        
         
@@ -183,7 +192,10 @@ def update(id):
                 customer.address = address
             if name or age or address:
                 db.session.commit()
-                flash("Customer Updated Successfully","success")
+                c_status = models.CustomerStatus.query.filter_by(customer_ssnid=id).first()
+                c_status.message=c_message
+                db.session.commit()
+                flash(c_message,"success")
             else:
                  flash("No Changes were made","success")
             return redirect(url_for('searchcustomer'))
@@ -198,12 +210,19 @@ def update(id):
 
 @app.route("/customer/delete/<id>",methods=['GET','POST'])    
 def delete(id):
+    c_message="Customer Deleted Successfully!"
     if session.get('username') and session.get('type')=='executive':
         customer = models.Customer.query.filter_by(ssnid=id).first()        
         if request.method=='POST':
+            c_status = models.CustomerStatus.query.filter_by(customer_ssnid=id).first()
             db.session.delete(customer)
             db.session.commit()
-            flash("Customer Deleted Successfully","success")
+            # c_status.customer_cid=None
+            # c_status.customer_ssnid=customer.ssnid
+            c_status.message=c_message
+            c_status.status="inactive"
+            db.session.commit()
+            flash(c_message,"success")
             return redirect(url_for('searchcustomer'))
         else:
             return render_template('Customer/delete_customer.html',data=customer)         
@@ -214,6 +233,7 @@ def delete(id):
 
 @app.route("/customer/create_account/",methods=['GET','POST'])
 def create_account():
+    a_message="Account Created successfully!"
     if session.get('username') and session.get('type')=='executive':
         if request.method=='POST':
             cid=request.form['cid']
@@ -222,7 +242,6 @@ def create_account():
                 cid=request.form['cid']
             accnt_type=request.form['accnt_type']
             ammount=int(request.form['ammount'])
-            
             if cid and accnt_type and ammount and customer:
                 account=models.Account.query.filter_by(customer_cid=cid,accnt_type=accnt_type).first()
                 if(account==None):
@@ -230,7 +249,11 @@ def create_account():
                     )
                     db.session.add(account)
                     db.session.commit()
-                    flash("Account Created successfully!","success")
+                    account=models.Account.query.filter_by(customer_cid=cid,accnt_type=accnt_type).first()
+                    a_status=models.AccountStatus(account_id=account.accntid,customer_cid=account.customer_cid,accnt_type=account.accnt_type,message=a_message,status="active")
+                    db.session.add(a_status)
+                    db.session.commit()
+                    flash(a_message,"success")
                 else:
                     flash("Account of Customer with CID : "+cid+" and Type : "+accnt_type+" already exists!","warning")
             else:
@@ -257,11 +280,6 @@ def acc_search():
                 account=models.Account.query.filter_by(accntid=accntid).all()
 
             if account:
-                # print("account id : ",accntid)
-                # print("account : ",account)
-                # for acc in account:
-                #     print("accntid : {0} , cid : {1} , type : {2} , amount : {3}".format(acc.accntid,
-                #     acc.customer_cid,acc.accnt_type,acc.ammount))
                 return render_template("Customer/showaccount.html",data=account)
             flash("Enter Valid either of Customer ID or Account Id","warning")
             return render_template('Customer/account_search.html') 
@@ -271,19 +289,34 @@ def acc_search():
         flash("Login first as a Account Executive","danger")
     return redirect(url_for('login'))
 
-# status
-@app.route("/customer_status/")
+# Customer status
+@app.route("/customer/customer_status")
 def cus_status():
-    return render_template("Customer/cust_account_statement.html")
-@app.route("/account_status/")
+    if session.get('username') and session.get('type')=='executive':
+        c_status=models.CustomerStatus.query.all()
+        if c_status:
+            return render_template("Customer/customer_status.html",data=c_status)
+        else:
+            flash("No Customre Status Records available, Create an Account first!")
+            return redirect(url_for('create_customer'))
+    else: 
+        flash("Login first as a Account Executive","danger")
+    return redirect(url_for('login'))
+
+# Account status
+@app.route("/customer/account_status")
 def acc_status():
-    return render_template("Customer/account_statement.html")
+    if session.get('username') and session.get('type')=='executive':
+        a_status=models.AccountStatus.query.all()
+        if a_status:
+            return render_template("Customer/customer_status.html",data=a_status)
+        else:
+            flash("No Account Status records available, Create an account first!")
+            return redirect(url_for('create_account'))
+    else: 
+        flash("Login first as a Account Executive","danger")
+    return redirect(url_for('login'))
 
-
-# transfer
-@app.route("/transfer/")
-def transfer():
-    return render_template("Customer/transfer_money.html")
 
 #==========Cashier=========================
 @app.route('/cashier')

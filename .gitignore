@@ -2,3 +2,5 @@ venv
 migrations
 __pycache__
 temp.py
+templates/Customer/old_customer_statement.html
+templates/Customer/old_account_statement.html
