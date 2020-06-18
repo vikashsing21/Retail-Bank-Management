@@ -1,0 +1,83 @@
+{% extends "Cashier/layout.html" %}
+{% block body %}
+
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-option contact-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Withdraw Money</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
+
+<div class="container">
+    <div class="contact__form"
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="contact__form__text">
+                    <form action="/cashier/showtransfermoney" method="post">
+                        <div class="input-list">
+                            <!--SSN id-->
+                           
+                            <div class="form-group row justify-content-center">
+                            <label class="col-lg-3 col-form-label" for="id">Customer ID:{{data[0].customer_cid}}</label>
+                                <br>
+                                 {% for account in data %}
+                                <label class="col-lg-3 col-form-label" for="id">Account Id : {{account.accntid}}</label>
+                                <br>
+                                
+                                <label class="col-lg-3 col-form-label" for="id">Account Type:{{account.accnt_type}}</label>
+                                <br>
+                                <label class="col-lg-3 col-form-label" for="id">Balance:{{account.ammount}}</label>
+                                <br>
+                                {%endfor%}
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="account">Select Account Type</label>
+                                <div class="col-lg">
+                                    <select class="form-control" id="accountone" name="accnt_type" required>
+                                        <option value=””>Select account</option>
+                                        <option value="saving">Saving</option>
+                                        <option value="current">Current</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="account">Target Account Type</label>
+                                <div class="col-lg">
+                                    <select class="form-control" id="targetaccount" name="targetaccnt_type" required>
+                                        <option value=””>Select account</option>
+                                        <option value="saving">Saving</option>
+                                        <option value="current">Current</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="id">Transfer Ammount:</label>
+                                <div class="col-lg">
+                                    <input class="form-control" name="transferamt" placeholder="Withdraw Ammount" type="number">
+                                </div>
+                            <input id='accntid' name='accntid' type="hidden" value={{data[0].accntid}}>
+                            {<input id='cus_id' name='cus_id' type="hidden" value={{data[0].customer_cid}}>
+
+                                
+                            </div>
+
+                            <!--Submit button-->
+                            <div class="row justify-content-center">
+                                <button class="site-btn" name="submit" type="submit" value="Submit">Transfer Ammount</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

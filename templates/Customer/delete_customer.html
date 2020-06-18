@@ -22,20 +22,22 @@
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <div class="contact__form__text">
-                    
+
                     <form action="{{url_for('delete',id=data.ssnid)}}" method="post">
                         <div class="input-list">
-                            
+
                             <div class="form-group row justify-content-center">
                                 <label class="col-lg-3 col-form-label" for="id">Customer SSN ID</label>
-                                <div class="col-lg" >
-                                    <input type="text" style="background-color: gray;color: white;" value="{{data.ssnid}}" disabled>
+                                <div class="col-lg">
+                                    <input type="text" style="background-color: gray;color: white;"
+                                        value="{{data.ssnid}}" disabled>
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center">
                                 <label class="col-lg-3 col-form-label" for="id">Customer ID</label>
                                 <div class="col-lg">
-                                    <input type="text" style="background-color: gray;color: white;" value="{{data.cid}}" disabled>
+                                    <input type="text" style="background-color: gray;color: white;" value="{{data.cid}}"
+                                        disabled>
                                 </div>
                             </div>
 
@@ -43,13 +45,15 @@
                             <div class="form-group row justify-content-center">
                                 <label class="col-lg-3 col-form-label" for="id">Customer Name</label>
                                 <div class="col-lg">
-                                    <input type="text" style="background-color: gray;color: white;" value="{{data.name}}" disabled>
+                                    <input type="text" style="background-color: gray;color: white;"
+                                        value="{{data.name}}" disabled>
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center">
                                 <label class="col-lg-3 col-form-label" for="id">Age</label>
                                 <div class="col-lg">
-                                    <input type="text" style="background-color: gray;color: white;" value="{{data.age}}" disabled>
+                                    <input type="text" style="background-color: gray;color: white;" value="{{data.age}}"
+                                        disabled>
                                 </div>
                             </div>
 
@@ -57,21 +61,22 @@
                             <div class="form-group row justify-content-center">
                                 <label class="col-lg-3 col-form-label" for="id">Address</label>
                                 <div class="col-lg">
-                                    <input type="text" style="background-color: gray;color: white;" value="{{data.address}}" disabled>
+                                    <input type="text" style="background-color: gray;color: white;"
+                                        value="{{data.address}}" disabled>
                                 </div>
                             </div>
 
-                            
+
                         </div>
 
                         <div class="row justify-content-center">
                             <button class="btn btn-danger" name="submit" required type="submit" value="Confirm Delete">
                                 Confirm Delete
                             </button>
-                            <a  href="{{url_for('searchcustomer')}}" class="btn btn-warning">Cancel</a>
+                            <a href="{{url_for('searchcustomer')}}" class="btn btn-warning">Cancel</a>
                         </div>
                     </form>
-                        
+
                 </div>
             </div>
         </div>

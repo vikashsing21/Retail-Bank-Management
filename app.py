@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, render_template, request, session, redirect, url_for,flash
+from flask import Flask, jsonify, render_template, request, session, redirect, url_for,flash,make_response,send_file
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 from flask_migrate import Migrate
 from _datetime import datetime
 from form import RegistrationForm,LoginForm,CreateCustomerForm
-import json
+import json,pdfkit
 
 
 
@@ -101,6 +101,8 @@ def home():
             return render_template('Customer/home.html')
     flash("Login first as a Executive","danger")
     return redirect(url_for('login'))
+
+
 
 
 # @app.route('/customer/home')
@@ -320,15 +322,211 @@ def acc_status():
 
 #==========Cashier=========================
 @app.route('/cashier')
+@app.route('/cashier/home')
 def cashierIndex():
     if session.get('username') and session.get('type')=='cashier':
-            return render_template('Cashier/layout.html')
+            return render_template('Cashier/home.html')
     flash("Login first as a Cashier","danger")
     return redirect(url_for('login'))
 
+@app.route('/cashier/accinfo/', methods=['GET','POST'])
+@app.route('/cashier/acc_info', methods=['GET','POST'])
+def acc_info():
+    if session.get('username') and session.get('type')=='cashier':
+        if request.method=='POST':
+            customer_cid=request.form['customer_cid']
+            accntid=request.form['accntid']
+            account=None
+            if(customer_cid!='' and accntid==''):
+                account=models.Account.query.filter_by(customer_cid=customer_cid)
+            elif(accntid!='' and customer_cid==''):
+                account=models.Account.query.filter_by(accntid=accntid)
+            if account!=None:
+                return render_template("Cashier/show_acc_info.html",data=account)
+            flash("Enter Valid either of Customer ID or customer_cid","warning")
+            return render_template('Cashier/acc_info.html') 
+        else:
+            return render_template('Cashier/acc_info.html')
+    else: 
+        flash("Login first as a Cashier","danger")
+    return redirect(url_for('login'))
 
-
+@app.route('/cashier/depositemoney',methods=['GET','POST'])
+def deposite_money():
+    if session.get('username') and session.get('type')=='cashier':
+        if request.method=='POST':
+            print("u r in post")
+#customer_cid=request.form['customer_cid']
+            accntid=request.form['accntid']
+            # if(customer_cid!='' and accntid==''):
+            #     account=models.Account.query.filter_by(customer_cid=customer_cid)
+            # elif(accntid!='' and customer_cid==''):
+            #     account=models.Account.query.filter_by(accntid=accnti
+            account=models.Account.query.filter_by(accntid=accntid).all()
+            if account:
+                return render_template("Cashier/deposite_money.html",data=account)
+            # flash("Enter Valid either of Customer ID or customer_cid","warning")
+            # return render_template('Cashier/show_acc_info.html') 
+        else:
+            print("u r in get")
+            account=models.Account.query.filter_by(accntid=id).all()
+            return render_template('Cashier/deposite_money.html',data=account)
+    else: 
+        flash("Login first as a Cashier","danger")
+    return redirect(url_for('login'))
+      #return render_template("Cashier/deposite_money.html")
+@app.route('/cashier/showdepositemoney',methods=['GET','POST'])
+def show_depo_money():
+    accntid=request.form['accntid']
+    accountone=models.Account.query.filter_by(accntid=accntid).first()
+    account=models.Account.query.filter_by(accntid=accntid).all()
+    depositeamt=int(request.form['depositeamt'])
+    temp=accountone.ammount+depositeamt
+    accountone.ammount=temp
+    db.session.commit()
+    transaction=models.Transaction(accnt_id=accntid,customer_cid=accountone.customer_cid,ammount=depositeamt,transaction_date=datetime.now(),mode="Deposite",source_acc_type=accountone.accnt_type,target_acc_type=accountone.accnt_type)
+    if(transaction is not None):
+        db.session.add(transaction)
+        db.session.commit()
+        flash("Transaction Created successfully!","success")
+    else:
+        flash("Transaction creation failed.","danger")
+        db.session.add(transaction)
+        db.session.commit()
     
+    flash("Ammount Deposited,Successfully","sucess")
+    return render_template("Cashier/show_acc_info.html",data=account)
+
+
+@app.route('/cashier/withdrawmoney',methods=['GET','POST'])
+def withdraw_money():
+    if session.get('username') and session.get('type')=='cashier':
+        if request.method=='POST':
+            accntid=request.form['accntid']
+            account=models.Account.query.filter_by(accntid=accntid).all()
+            if account:
+                return render_template("Cashier/withdraw_money.html",data=account)
+            # flash("Enter Valid either of Customer ID or customer_cid","warning")
+            # return render_template('Cashier/show_acc_info.html') 
+    else: 
+        flash("Login first as a Cashier","danger")
+    return redirect(url_for('login'))
+      #return render_template("Cashier/deposite_money.html")
+
+@app.route('/cashier/showwithdrawmoney',methods=['GET','POST'])
+def show_withdraw_money():
+    accntid=request.form['accntid']
+    accountone=models.Account.query.filter_by(accntid=accntid).first()
+    account=models.Account.query.filter_by(accntid=accntid).all()
+    withdrawamt=int(request.form['withdrawamt'])
+    if withdrawamt > accountone.ammount:
+        flash("Insufficient Balance Ammount for withdraw.","danger")
+        return render_template("Cashier/show_acc_info.html",data=account)
+    else:
+        transaction=models.Transaction.query.filter_by(transaction_date=datetime.now())
+        temp=accountone.ammount-withdrawamt
+        accountone.ammount=temp
+        db.session.commit()
+        transaction=models.Transaction(accnt_id=accntid,customer_cid=accountone.customer_cid,ammount=withdrawamt,transaction_date=datetime.now(),mode="withdraw",source_acc_type=accountone.accnt_type,target_acc_type=accountone.accnt_type)
+        if (transaction is not None):
+            db.session.add(transaction)
+            db.session.commit()
+            flash("Transaction Created successfully!","success")
+        else:
+            flash("Transaction creation failed.","danger")
+           
+        flash("Ammount Withdrawed Successfully","sucess")
+        return render_template("Cashier/show_acc_info.html",data=account)
+
+@app.route('/cashier/transfermoney',methods=['GET','POST'])
+def transfer_money():
+    if session.get('username') and session.get('type')=='cashier':
+        if request.method=='POST':
+            accntid=request.form['accntid']
+            account=models.Account.query.filter_by(accntid=accntid).all()
+            if account:
+                return render_template("Cashier/transfer_money.html",data=account)
+            # flash("Enter Valid either of Customer ID or customer_cid","warning")
+            # return render_template('Cashier/show_acc_info.html') 
+    else: 
+        flash("Login first as a Cashier","danger")
+    return redirect(url_for('login'))
+
+@app.route('/cashier/showtransfermoney',methods=['GET','POST'])
+def show_transfer_money():
+    accntid=request.form['accntid']
+    cusid=request.form['cus_id']
+    curracc=request.form['accnt_type']
+    targetacc=request.form['targetaccnt_type']
+    transferammount=int(request.form['transferamt'])
+    accountcurr=models.Account.query.filter_by(customer_cid=cusid,accnt_type=curracc).first()
+    print(accountcurr)
+    accounttarget=models.Account.query.filter_by(customer_cid=cusid,accnt_type=targetacc).first()
+    print(accounttarget)
+    account=models.Account.query.filter_by(customer_cid=cusid).all()
+    if(accountcurr is None):
+        flash('"first create"+{{curracc}}+" than transfer"')
+        return render_template("Cashier/show_acc_info.html",data=account)
+    elif(accounttarget is None):
+        flash('"first create"+{{targetacc}}+"than transfer"')
+        return render_template("Cashier/show_acc_info.html",data=account)
+    elif (transferammount > accountcurr.ammount):
+        flash("Insufficient Balance Ammount for withdraw.","danger")
+        return render_template("Cashier/show_acc_info.html",data=account)
+    elif(accountcurr and accounttarget):
+        # transaction=models.Transaction.query.filter_by(transaction_date=datetime.now())
+        # if(transaction is None):
+        transaction=models.Transaction(accnt_id=accntid,customer_cid=cusid,ammount=transferammount,transaction_date=datetime.now(),mode="Transfer",source_acc_type=curracc,target_acc_type=targetacc)
+        if(transaction is not None):
+            db.session.add(transaction)
+            db.session.commit()
+            flash("Transaction Created successfully!","success")
+        else:
+            flash("Transaction creation failed.","danger")
+        withdraw=accountcurr.ammount-transferammount
+        accountcurr.ammount=withdraw
+        deposite=accounttarget.ammount+transferammount
+        accounttarget.ammount=deposite
+        db.session.commit()
+        flash("Ammount transfered Successfully","sucess")
+        return render_template("Cashier/show_acc_info.html",data=account)
+      #return render_template("Cashier/transfer_money.html")
+
+
+@app.route('/cashier/accountstatement', methods=['GET','POST'])
+def accountstatement():
+    # cusid=1
+    # account=models.Transaction.query.filter_by(customer_cid=cusid).all()
+    # return render_template("Cashier/show_acc_statmt.html",data=account) 
+    if session.get('username') and session.get('type')=='cashier':
+       
+            return render_template("Cashier/Account_Statement.html")
+            # flash("Enter Valid either of Customer ID or customer_cid","warning")
+            # return render_template('Cashier/show_acc_info.html') 
+    else: 
+        flash("Login first as a Cashier","danger")
+    return redirect(url_for('login'))
+
+@app.route('/cashier/show_acc_statmt',methods=['GET','POST'])
+def show_acc_statmt():  
+    cusid=request.form['id']
+    account=models.Transaction.query.filter_by(customer_cid=cusid).all()
+    return render_template("Cashier/show_acc_statmt.html",data=account) 
+
+
+@app.route('/cashier/pdfdownload')
+def pdf():
+    res=render_template('Cashier/show_acc_statmt.html',methods=['GET','POST'])
+    # response=make_response(res,False)
+
+    pdf=pdfkit.from_string(res,False)
+    response=make_response(pdf)
+    response.header['Content-Type']='application/pdf'
+    response.header['Content-Disposition']='inline;filename=AccontStatements.pdf'
+    return response
+    # path="C:/Users/Shailu-Sir/Desktop/Acd Docm/TCS/Niche Technolody/Rock/XploreCaseStudyDemo01/Example.pdf"
+    # return send_file(path,as_ttachment=True)
+
 if __name__ == '__main__':
     app.run(debug=True)
 

@@ -107,3 +107,19 @@ class AccountStatus(db.Model):
     created_on = db.Column(db.TIMESTAMP, default=datetime.now())
     updated_on= db.Column(db.TIMESTAMP, nullable=False,default=datetime.now(),onupdate=datetime.now())
     
+class Transaction(db.Model):
+    """
+    Create a Transaction table
+    """
+    __tablename__ = 'transactions'
+
+    transaction_id=db.Column(db.Integer,primary_key=True)
+    accnt_id=db.Column(db.Integer,nullable=False)
+    customer_cid = db.Column(db.Integer, db.ForeignKey('customers.cid'))
+    ammount=db.Column(db.Integer,nullable=False)
+    transaction_date = db.Column(db.TIMESTAMP, default=datetime.now())
+    mode=db.Column(db.String(60),nullable=False)
+    source_acc_type = db.Column(db.String(30),)
+    target_acc_type= db.Column(db.String(30))
+    created_on = db.Column(db.TIMESTAMP, default=datetime.now())
+    updated_on= db.Column(db.DateTime, nullable=False,default=datetime.utcnow,onupdate=datetime.utcnow)

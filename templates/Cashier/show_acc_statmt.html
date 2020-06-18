@@ -1,0 +1,72 @@
+{% extends "Cashier/layout.html" %}
+{% block body %}
+
+<div class="breadcrumb-option contact-breadcrumb" style="padding-bottom: 30px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Account Statement</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
+<div class="container">
+    
+        <div class="row justify-content-center">
+            <table class="table table-striped" border="1">
+            <tr>
+                <th>Customer Id</th>
+                <th>Transaction Id</th>
+                <th>Amount</th>
+                <th>Transaction Date</th>
+                <th>Mode</th>
+                <th>Source Account Type</th>
+                <th>Taget Account type</th>
+            </tr>
+            
+            {% for account in data %}
+            <tr>
+                <td>{{data[0].customer_cid}}</td>
+            
+                <td>{{account.transaction_id}}</td>
+            
+            
+                <td>{{account.ammount}}</td>
+        
+            
+                <td>{{account.transaction_date}}</td>
+            
+            
+                <td>{{account.mode}}</td>
+                
+                <td>{{account.source_acc_type}}</td>
+            
+                
+                <td>{{account.target_acc_type}}</td>
+            </tr>
+        {%endfor%}
+        </table>
+        </div>
+        <div class="row justify-content-center">
+        <form method="post">
+                            
+             <div class="row justify-content-center">
+             <button class="site-btn" name="pdf" type="submit" value="pdf" formaction="/cashier/pdfdownload">Download as PDF</button>
+             </div>
+            <br>
+            <div class="row justify-content-center">
+            <button class="site-btn" name="excel" type="submit" value="excel" formaction="/cashier/show_acc_statmt">Withdraw Money</button>
+            </div>
+            <br>  
+         </form>
+        </div>         
+                </div>
+            
+        </div>
+  
+</div>
+
+{% endblock%}

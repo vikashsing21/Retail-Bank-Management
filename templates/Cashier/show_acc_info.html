@@ -1,0 +1,63 @@
+{% extends "Cashier/layout.html" %}
+{% block body %}
+<table class="table table-striped" border="1">
+    <tr>
+        <td>Customer ID</td>
+        <td>{{data[0].customer_cid}}</td>
+
+    </tr>
+    {% for account in data %}
+    <tr>
+        <td>Account Id</td>
+        <td>{{account.accntid}}</td>
+    </tr>
+    <tr>
+        <td>Account Type</td>
+        <td>{{account.accnt_type}}</td>
+    </tr>
+    <tr>
+        <td>Amount</td>
+        <td>{{account.ammount}}</td>
+    </tr>
+{%endfor%}
+</table>
+
+<br><Br><br><br><br><br><br><br>
+<div class="container">
+    <div class="contact__form">
+        <div class="row justify-content-center">
+            
+                <div>
+                    <form method="post">
+                            <!--Submit button-->
+                            <input id='customer_cid' name="customer_cid" type="hidden" value={{data[0].customer_cid}}>
+                            {% for account in data %}
+                            <input id='accntid' name='accntid' type="hidden" value={{account.accntid}}>
+                            <input id=acctype  type="hidden" value={{account.accnt_type}}>
+                            <input id=accamt  type="hidden" value={{account.ammount}}>
+                            {%endfor%}
+
+
+                            <div class="row justify-content-center">
+                                <button class="site-btn" name="deposite_money" type="submit" value="deposite_money" formaction="/cashier/depositemoney">Deposite Money</button>
+                            </div>
+                            <br>
+                            <div class="row justify-content-center">
+                                <button class="site-btn" name="withdraw_money" type="submit" value="withdraw_money" formaction="/cashier/withdrawmoney">Withdraw Money</button>
+                            </div>
+                            <br>
+                            <div class="row justify-content-center">
+                                <button class="site-btn" name="transfer_money" type="submit" value="transfer_money" formaction="/cashier/transfermoney">Transfer Money</button>
+                            </div>
+                            
+                        </div>
+                    </form>
+                    
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

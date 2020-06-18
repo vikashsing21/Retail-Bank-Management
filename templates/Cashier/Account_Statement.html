@@ -1,12 +1,12 @@
-{% extends "Customer/layout.html" %}{% block body %}
+{% extends "Cashier/layout.html" %}
+{% block body %}
 
-<!-- Breadcrumb Section Begin -->
 <div class="breadcrumb-option contact-breadcrumb">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Create Account</h2>
+                    <h2>Account Statement</h2>
                 </div>
             </div>
         </div>
@@ -18,33 +18,38 @@
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <div class="contact__form__text">
-                    <form action="" method="post">
+                    <form action="/cashier/show_acc_statmt" method="post">
                         <div class="input-list">
                             <!--Customer ID-->
                             <div class="form-group row justify-content-center">
-                                <label class="col-lg-3 col-form-label" for="id">Customer ID</label>
+                                <label class="col-lg-3 col-form-label" for="id">Account ID</label>
                                 <div class="col-lg">
-                                    <input class="form-control" name="cid" placeholder="Customer ID" type="number" required>
+                                    <input class="form-control" name="id" placeholder="Account ID" type="number">
                                 </div>
                             </div>
 
-                            <!--Account-->
                             <div class="form-group row justify-content-center">
-                                <label class="col-lg-3 col-form-label" for="account">Account</label>
-                                <div class="col-lg">
-                                    <select class="form-control" id="account" name="accnt_type" required>
-                                        <option value="" disabled selected>Select account......</option>
-                                        <option value="saving">Saving</option>
-                                        <option value="current">Current</option>
-                                    </select>
+                                <label class="col-lg-3 col-form-label" for="id">Last Number of Transactions</label>
+                                <div class="col-lg-1 justify-content-right">
+                                    <input class="form-control form-check-input" id="transaction1" type="radio">
+                                </div>
+                                <label class="col-lg-3 col-form-label" for="id">Start-End Dates</label>
+
+                                <div class="col-lg-1">
+                                    <input class="form-control form-check-input" id="transaction2" name="radiobutton"
+                                           type="radio">
                                 </div>
                             </div>
+
+                            <br>
                             <div class="form-group row justify-content-center">
-                                <label class="col-lg-3 col-form-label" for="deposite">Deposit Amount</label>
+                                <label class="col-lg-3 col-form-label" for="id">Number of Transactions</label>
                                 <div class="col-lg">
-                                    <input class="form-control" name="ammount" placeholder="Deposit Amount" type="number" min="0" value="0" required>
+                                    <input class="form-control" name="transactions" placeholder="Number of Transactions"
+                                           type="number">
                                 </div>
                             </div>
+
                             <!--Submit-->
                             <div class="row justify-content-center">
                                 <button class="site-btn" name="submit" type="submit" value="Submit">Submit</button>
@@ -56,5 +61,6 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}

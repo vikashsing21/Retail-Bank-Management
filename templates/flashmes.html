@@ -1,13 +1,9 @@
-{% block flashmes %}
-{% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <!-- <div  role="alert"></div> -->
-        <ul class=flashes>
-          {% for category, message in messages %}
-            <li class="alert alert-{{ category }} alert-dismissible"> {{ message }} </li>
-          {% endfor %}
-          </ul>
-        </div>
-        {% endif %}
-      {% endwith %}
-{% endblock %}
+{% block flashmes %} {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+<!-- <div  role="alert"></div> -->
+<ul class=flashes>
+    {% for category, message in messages %}
+    <p class="alert alert-{{ category }} alert-dismissible" style="margin-bottom: 5px;"> {{ message }} </p>
+    {% endfor %}
+</ul>
+</div>
+{% endif %} {% endwith %} {% endblock %}

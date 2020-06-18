@@ -5,46 +5,59 @@
 <head>
     <meta charset="UTF-8">
     <title>User Login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/stylefiles.css') }}">
+    <!--external css-->
+    <link href="{{url_for('static', filename='css/main.css')}}" rel="stylesheet" type="text/css">
     <!-- jquery   -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- bootstrap js   -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- fontawesome icons   -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 </head>
 
 <body>
-
-    <h2>Login</h2>
-    <section class="container">
-        <section class="row justify-content-center">
-            <section class="col-12 col-sm-6 col-md-3">
-                {% from 'includes/_formhelpers.html' import render_field %}
-                <form method="post" action="/login" class="form-container">
-
-                    <dl> 
-                        {{form.csrf_token}}
-                         {{render_field(form.username)}}
-                         {{render_field(form.password)}}
-
-                    </dl>
-                    <div> <input class="btn btn-success btn-block" type="submit" name="commit" value="Login">
-                        <br>
-                        <a href="{{url_for('register')}}">Register</a>
-                
+    <div class="container">
+        <div class="login__form">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="contact__form__text">
+                        {% from 'includes/_formhelpers.html' import render_field %}
+                        <form method="post" action="/login" class="form-container">
+                            <div class="row justify-content-center">
+                                <label style="color: white; font-size: 30px;">Login</label>
+                            </div>
+                            {{form.csrf_token}}
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="name">{{form.username.label}}</label>
+                                <div class="col-lg">
+                                    {{form.username(size=20)}}
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <label class="col-lg-3 col-form-label" for="password">{{form.password.label}}</label>
+                                <div class="col-lg">
+                                    {{form.password(size=20)}}
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <button class="site-btn" name="submit" type="submit" value="Login">Login</button>
+                            </div>
+                            <div class="row justify-content-center" style="padding-top: 20px;">
+                                <a href="{{url_for('register')}}">Don't have an Account? Register here!</a>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </section>
-        </section>
-        <!-- For showing Flash Messages from app.py -->
-        {% include "flashmes.html" %}
-    </section>
-
+                    <div class="row justify-content-center" style="margin-top: 10px;">
+                        <!-- For showing Flash Messages from app.py -->
+                        {% include "flashmes.html" %}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
