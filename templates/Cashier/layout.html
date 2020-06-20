@@ -81,7 +81,7 @@
                         <li><i class="fa fa-map-marker"></i>Public Bank, Varachha,surat, Gujarat, India</li>
                         <li><i class="fa fa-phone"></i> (123) 456-78-910</li>
                         <li><i class="fa fa-envelope"></i>publicbank@bank.com</li>
-                        <li id="username" class="justify-content-right"><i class="fa fa-user"></i>{{session.get('username')}}</li>
+                        <li id="yourname" class="justify-content-right"><i class="fa fa-user"></i>{{session.get('username')}}</li>
                     </ul>
                 </div>
             </div>
@@ -89,25 +89,20 @@
     </div>
     <div class="container">
         <div class="row">
-            <!--            <div class="col-lg-1">-->
-            <!--                <div class="header__logo">-->
-            <!--                    <a href="/"><img alt="website logo" src="{{url_for('static', filename='img/logo.png')}}"></a>-->
-            <!--                </div>-->
-            <!--            </div>-->
+          <div class="offset-3 col-lg-1">
+                <div class="header__logo">
+                    <a href="/"><img alt="website logo" src="{{url_for('static', filename='img/logo.png')}}"></a>
+                </div>
+            </div>
             <div class="col-lg">
                 <div class="header__nav">
                     <nav class="header__menu">
-                        <!--                        <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"-->
-                        <!--                                class="navbar-toggler"-->
-                        <!--                                data-target="#navbarNavDropdown" data-toggle="collapse" type="button">-->
-                        <!--                            <span class="navbar-toggler-icon"></span>-->
-                        <!--                        </button>-->
                         <ul>
                             <li class="active">
                                 <a href="/cashier/home">Home</a>
                             </li>
                             <li>
-                                <a href="#">Account 
+                                <a href="#">Account Operation
                                     </a>
                                 <ul class="dropdown">
                                     <li><a href="/cashier/accinfo">Account Info</a></li>
@@ -117,11 +112,7 @@
                                 </ul>
                             </li>
                             <li>
-                            <a href="#">Account 
-                                    </a>
-                                <ul class="dropdown">
-                                    <li><a href="/cashier/accountstatement">Account Statement</a></li>
-                                </ul>
+                                <a href="/cashier/accountstatement">Account Statement</a>
                             </li>
                             <li>
                                 <a href="{{url_for('logout')}}">Logout</a>

@@ -507,6 +507,21 @@ def accountstatement():
         flash("Login first as a Cashier","danger")
     return redirect(url_for('login'))
 
+@app.route('/cashier/show_acc_statmt',methods=['GET','POST'])
+def show_acc_statmt(): 
+    if session.get('username') and session.get('type')=='cashier': 
+        cusid=request.form['id']
+        account=models.Transaction.query.filter_by(customer_cid=cusid).all()
+        if account:
+            return render_template("Cashier/show_acc_statmt.html",data=account)
+        else:
+            flash('No Transaction records available with given ID : '+cusid)
+            return render_template("Cashier/Account_Statement.html")
+    else: 
+        flash("Login first as a Cashier","danger")
+    return redirect(url_for('login')) 
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
