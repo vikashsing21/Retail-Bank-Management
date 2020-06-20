@@ -4,7 +4,7 @@ from config import Config
 from flask_migrate import Migrate
 from _datetime import datetime
 from form import RegistrationForm,LoginForm,CreateCustomerForm
-import json,pdfkit
+import json
 
 
 
@@ -506,26 +506,6 @@ def accountstatement():
     else: 
         flash("Login first as a Cashier","danger")
     return redirect(url_for('login'))
-
-@app.route('/cashier/show_acc_statmt',methods=['GET','POST'])
-def show_acc_statmt():  
-    cusid=request.form['id']
-    account=models.Transaction.query.filter_by(customer_cid=cusid).all()
-    return render_template("Cashier/show_acc_statmt.html",data=account) 
-
-
-@app.route('/cashier/pdfdownload')
-def pdf():
-    res=render_template('Cashier/show_acc_statmt.html',methods=['GET','POST'])
-    # response=make_response(res,False)
-
-    pdf=pdfkit.from_string(res,False)
-    response=make_response(pdf)
-    response.header['Content-Type']='application/pdf'
-    response.header['Content-Disposition']='inline;filename=AccontStatements.pdf'
-    return response
-    # path="C:/Users/Shailu-Sir/Desktop/Acd Docm/TCS/Niche Technolody/Rock/XploreCaseStudyDemo01/Example.pdf"
-    # return send_file(path,as_ttachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
