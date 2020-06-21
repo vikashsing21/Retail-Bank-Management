@@ -155,14 +155,12 @@ def create_customer():
 def searchcustomer():
     if session.get('username') and session.get('type')=='executive':
         if request.method=='POST':
-            
-            ssnid=request.form['ssnid']
-            cid=request.form['cid']
-            print("Cid : {} SId {}".format(cid,ssnid))
             customer=None
-            if(ssnid!='' and cid==''):
+            if('ssnid'in request.form):
+                ssnid=request.form['ssnid']
                 customer=models.Customer.query.filter_by(ssnid=ssnid).first()
-            elif(cid!='' and ssnid==''):
+            elif('cid'in request.form):
+                cid=request.form['cid']
                 customer=models.Customer.query.filter_by(cid=cid).first()
             if customer!=None:
                 return render_template("Customer/showcustomer.html",data=customer)
@@ -270,17 +268,15 @@ def create_account():
 def acc_search():
     if session.get('username') and session.get('type')=='executive':
         if request.method=='POST':
-            customer_cid=request.form['cid']
-            accntid=request.form['accntid']
             account=None
             # using customer id multiple accounts are possible
-            if(customer_cid!='' and accntid==''):
+            if('cid' in request.form):
+                customer_cid=request.form['cid']    
                 account=models.Account.query.filter_by(customer_cid=customer_cid).all()
-
             # using account id only one account is possible
-            elif(accntid!='' and customer_cid==''):
+            elif('accntid' in request.form):
+                accntid=request.form['accntid']
                 account=models.Account.query.filter_by(accntid=accntid).all()
-
             if account:
                 return render_template("Customer/showaccount.html",data=account)
             flash("Enter Valid either of Customer ID or Account Id","warning")
@@ -334,12 +330,12 @@ def cashierIndex():
 def acc_info():
     if session.get('username') and session.get('type')=='cashier':
         if request.method=='POST':
-            customer_cid=request.form['customer_cid']
-            accntid=request.form['accntid']
             account=None
-            if(customer_cid!='' and accntid==''):
+            if('customer_cid' in request.form):
+                customer_cid=request.form['customer_cid']
                 account=models.Account.query.filter_by(customer_cid=customer_cid)
-            elif(accntid!='' and customer_cid==''):
+            elif('accntid' in request.form):
+                accntid=request.form['accntid']
                 account=models.Account.query.filter_by(accntid=accntid)
             if account!=None:
                 return render_template("Cashier/show_acc_info.html",data=account)
@@ -355,26 +351,17 @@ def acc_info():
 def deposite_money():
     if session.get('username') and session.get('type')=='cashier':
         if request.method=='POST':
-            print("u r in post")
-#customer_cid=request.form['customer_cid']
             accntid=request.form['accntid']
-            # if(customer_cid!='' and accntid==''):
-            #     account=models.Account.query.filter_by(customer_cid=customer_cid)
-            # elif(accntid!='' and customer_cid==''):
-            #     account=models.Account.query.filter_by(accntid=accnti
             account=models.Account.query.filter_by(accntid=accntid).all()
             if account:
                 return render_template("Cashier/deposite_money.html",data=account)
-            # flash("Enter Valid either of Customer ID or customer_cid","warning")
-            # return render_template('Cashier/show_acc_info.html') 
         else:
-            print("u r in get")
             account=models.Account.query.filter_by(accntid=id).all()
             return render_template('Cashier/deposite_money.html',data=account)
     else: 
         flash("Login first as a Cashier","danger")
     return redirect(url_for('login'))
-      #return render_template("Cashier/deposite_money.html")
+
 @app.route('/cashier/showdepositemoney',methods=['GET','POST'])
 def show_depo_money():
     accntid=request.form['accntid']
@@ -406,12 +393,10 @@ def withdraw_money():
             account=models.Account.query.filter_by(accntid=accntid).all()
             if account:
                 return render_template("Cashier/withdraw_money.html",data=account)
-            # flash("Enter Valid either of Customer ID or customer_cid","warning")
-            # return render_template('Cashier/show_acc_info.html') 
     else: 
         flash("Login first as a Cashier","danger")
     return redirect(url_for('login'))
-      #return render_template("Cashier/deposite_money.html")
+
 
 @app.route('/cashier/showwithdrawmoney',methods=['GET','POST'])
 def show_withdraw_money():
@@ -446,8 +431,6 @@ def transfer_money():
             account=models.Account.query.filter_by(accntid=accntid).all()
             if account:
                 return render_template("Cashier/transfer_money.html",data=account)
-            # flash("Enter Valid either of Customer ID or customer_cid","warning")
-            # return render_template('Cashier/show_acc_info.html') 
     else: 
         flash("Login first as a Cashier","danger")
     return redirect(url_for('login'))

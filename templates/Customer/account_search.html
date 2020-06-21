@@ -1,18 +1,5 @@
 {% extends "Customer/layout.html" %} {% block body %}
-<script >
-  $(document).ready(function(){
-$('#aid').blur(function(){
-  if($(this).val().length != 0){
-      $('#cid').attr('disabled', 'disabled');
-  }       
-});
-$('#cid').blur(function(){
-  if($(this).val().length != 0){
-      $('#aid').attr('disabled', 'disabled');
-  }       
-});
-});
-</script>
+
 <!-- Breadcrumb Section Begin -->
 <div class="breadcrumb-option contact-breadcrumb">
   <div class="container">
@@ -61,5 +48,25 @@ $('#cid').blur(function(){
     </div>
   </div>
 </div>
+
+<script >
+  $(document).ready(function(){
+$('#aid').blur(function(){
+  if($(this).val().length != 0){
+      $('#cid').attr('disabled', true);
+  }else{
+        $('#cid').attr('disabled', false);
+    }        
+});
+$('#cid').blur(function(){
+  if($(this).val().length != 0){
+      $('#aid').attr('disabled', true);
+  }
+  else{
+        $('#aid').attr('disabled', false);
+    }        
+});
+});
+</script>
 
 {% endblock %}

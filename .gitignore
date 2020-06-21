@@ -1,11 +1,5 @@
 venv
-migrations
+config.py
 __pycache__
-temp.py
-templates/Customer/old_customer_statement.html
-templates/Customer/old_account_statement.html
-XploreCaseStudyDemo01(Jay)
-XploreCaseStudyDemo01(Jigar)
-XploreCaseStudyDemo01(Rock)
 .vscode
 .flaskenv

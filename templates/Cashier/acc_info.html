@@ -26,7 +26,7 @@
                             <div class="form-group row justify-content-center">
                                 <label class="col-lg-3 col-form-label" for="id">Account Id</label>
                                 <div class="col-lg">
-                                    <input class="form-control" name="accntid" placeholder="Account ID" type="number">
+                                    <input class="form-control" id="aid" name="accntid" placeholder="Account ID" type="number">
                                 </div>
                             </div>
                             <div class="form-group row justify-content-center"><label class="col-form-label">OR</label></div>
@@ -34,7 +34,7 @@
                             <div class="form-group row justify-content-center">
                                 <label class="col-lg-3 col-form-label" for="id">Customer ID</label>
                                 <div class="col-lg">
-                                    <input class="form-control" name="customer_cid" placeholder="Customer ID" type="number">
+                                    <input class="form-control" id="cid" name="customer_cid" placeholder="Customer ID" type="number">
                                 </div>
                             </div>
 
@@ -49,5 +49,26 @@
         </div>
     </div>
 </div>
+
+<script >
+    $(document).ready(function(){
+  $('#aid').blur(function(){
+    if($(this).val().length != 0){
+        $('#cid').attr('disabled', true);
+    }else{
+          $('#cid').attr('disabled', false);
+      }        
+  });
+  $('#cid').blur(function(){
+    if($(this).val().length != 0){
+        $('#aid').attr('disabled', true);
+    }
+    else{
+          $('#aid').attr('disabled', false);
+      }        
+  });
+  });
+  </script>
+  
 
 {% endblock %}

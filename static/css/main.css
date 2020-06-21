@@ -155,6 +155,15 @@ input, select, textarea {
   -o-appearance: unset !important;
   -ms-appearance: unset !important; }
 
+  input[type="text"]:disabled{
+    background-color: gray;
+    color: white;
+  }
+  input[type="number"]:disabled{
+    background-color: gray;
+    color: white;
+  }  
+
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   appearance: none !important;
   -moz-appearance: none !important;
