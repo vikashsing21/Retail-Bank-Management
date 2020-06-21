@@ -27,20 +27,19 @@
                             <div class="form-group row justify-content-center">
                             <label class="col-lg-3 col-form-label" for="id">Customer ID:{{data[0].customer_cid}}</label>
                                 <br>
-                                 {% for account in data %}
-                                <label class="col-lg-3 col-form-label" for="id">Account Id : {{account.accntid}}</label>
+                                <label class="col-lg-3 col-form-label" for="id">Account Id : {{data[0].accntid}}</label>
                                 <br>
                                 
-                                <label class="col-lg-3 col-form-label" for="id">Account Type:{{account.accnt_type}}</label>
+                                <label class="col-lg-3 col-form-label" for="id">Account Type:{{data[0].accnt_type}}</label>
                                 <br>
-                                <label class="col-lg-3 col-form-label" for="id">Balance:{{account.ammount}}</label>
+                                <label class="col-lg-3 col-form-label" for="id">Balance:{{data[0].ammount}}</label>
                                 <br>
-                                {%endfor%}
+                                
                             </div>
                             <div class="form-group row justify-content-center">
                                 <label class="col-lg-3 col-form-label" for="id">Withdraw Ammount:</label>
                                 <div class="col-lg">
-                                    <input class="form-control" name="withdrawamt" placeholder="Withdraw Ammount" type="number">
+                                    <input class="form-control" name="withdrawamt" placeholder="Withdraw Ammount" type="number" required min="0" max="{{data[0].ammount}}">
                                 </div>
                             <input id='accntid' name='accntid' type="hidden" value={{data[0].accntid}}>
                                 
@@ -48,8 +47,12 @@
 
                             <!--Submit button-->
                             <div class="row justify-content-center">
-                                <button class="site-btn" name="submit" type="submit" value="Submit">Withdraw Ammount</button>
-                            </div>
+                                <!--Submit button-->
+                                    <button class="btn btn-success" name="submit" type="submit" value="Submit" style="margin-right: 5px;">Withdraw</button>
+                                <!--Cancel button-->
+                                    <!-- <a class="btn btn-danger" name="cancel" href="javascript:history.back()" style="margin-left: 5px;">Cancel</a> -->
+                                    <a class="btn btn-danger" name="cancel" href="url_for('acc_info')" style="margin-left: 5px;">Cancel</a>
+                                </div>
                         </div>
                     </form>
                 </div>
@@ -57,5 +60,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+    window.history.replaceState('','',window.location.href)
+    });
+ </script>
 
 {% endblock %}
